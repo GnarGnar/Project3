@@ -8,7 +8,6 @@ while(True):
 	ret, frame = cap.read()
 		
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	#blur = cv2.GaussianBlur(gray,(11,11),0)
 	fist=fist_cascade.detectMultiScale(gray,1.3,5)
 	for(x,y,w,h) in fist:
 		cv2.rectangle(frame,(x,y),(x+w, y+h),(0,255,0),2)
