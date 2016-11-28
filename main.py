@@ -1,11 +1,18 @@
 
 from PIL import Image
-
+import cv2
 
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from unittest.mock import sentinel
+
+'''
+from unidecode import unidecode
 
 
+def remove_non_ascii(text):
+    return unidecode(unicode(text, encoding = "utf-8"))
+'''
 
 
 def LSB( pixVal, bit ):
@@ -64,7 +71,6 @@ def hide(inFile, secretMess):
        
     newImg = Image.new( img.mode,img.size )
     newImg.putdata( hiddenPixList )
-    newImg.show()
     newImg.save('hiddenImage.png')
     
     print("Success.")       
@@ -110,40 +116,63 @@ def seek(hideFile):
     print("Your secret message: ")
     print( decodeMess )
 
+def hideImage( file1, file2):
+    turkey = cv2.imread(file1)
+    stuffing = cv2.imread(file2)
+    width, height, channel = turkey.shape
+    stuffing = cv2.resize(stuffing, (width,height) )
+    bwStuff = cv2.cvtColor(stuffing, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('bw',bwStuff)
+    
+    
+    
+#This is a check to see if the correct image is being processed.
+def seeBoth( inFile, hideFile ):
+    imBefore = cv2.imread(inFile)
+    imAfter = cv2.imread(hideFile)
+    cv2.imshow('Before', imBefore)
+    cv2.imshow('After', imAfter)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
   
 #main
 root = Tk()
+
 while( True ):
-    
-    
-    print("Steganography - Text")
-    print("1. Encrypt")
-    print("2. Decrypt")
-    print("3. Exit")
+    print("Steganography")
+    print("1. Encrypt Text")
+    print("2. Decrypt Text")
+    print("3. Compare before & after")
+    print("4. Exit")
     choice = input("Enter your poison: ")
     if choice == '1':
-        secretMess = input("Enter you secret mess: ")
-        print("Select your image: ")
+        #http://stackoverflow.com/questions/11664443/raw-input-across-multiple-lines-in-python
+        print("Enter your secret mess")
+        #sentinel = 'team48'
+        #secretMess = ''
+        #for line in iter(input, sentinel): 
+        secretMess=''+ '\n'.join(iter(input, 'team48' ))
         
-       
+        #secretMess = input("Enter you secret mess: ")
+        print("Select your image: ")
         inFile = askopenfilename()
         print (inFile)
         root.withdraw()
-        
-        
         hide( inFile, secretMess )
     elif choice == '2':
         print("Select your image: ")
-
         hideFile = askopenfilename()
         #root.withdraw()
-        
         seek( hideFile )
     elif choice == '3':
-        print("Proshchay")
+        seeBoth( inFile, hideFile )
+    elif choice == '4':
+        print("Sbohem -czech")
         break
-    
-    
+    elif choice =='5':
+        file1 = 'Star-Wars-Darth-Vader-Wallpaper.png'
+        file2= 'star-wars-yoda-spinoff-film.png'
+        hideImage( file1, file2 )
     #inFile = 'Star-Wars-The-Force-Awakens-R2-D2.png'
     #hideFile = 'hiddenImage.png'
      
