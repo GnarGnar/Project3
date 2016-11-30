@@ -7,6 +7,7 @@ from unittest.mock import sentinel
 from Crypto.Cipher import AES
 import numpy as np
 import cv2
+import os
 
 ciphertext=''
 
@@ -234,12 +235,15 @@ class App():
 
 
   def encryptMessage(self):
-    message=self.entry.get()
-    key1=self.entry2.get()
-    obj = AES.new(key1,AES.MODE_CFB,'This is an IV456')
-    global ciphertext
-    ciphertext=obj.encrypt(message)
-    print("This is the encrypted message: ", ciphertext)
+	rand_string = os.urandom(16)
+	message =input('Please enter your message: ')
+	length = 16 - (len(message)%16)
+	x = len(message)
+	for x in range (length):
+	message += " "
+	obj = AES.new(rand_string,AES.MODE_CBC,'This is an IV456')
+	ciphertext = obj.encrypt(message)
+	print("This is the encrypted message: ", ciphertext)
 
     
 
