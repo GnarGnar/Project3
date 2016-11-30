@@ -235,15 +235,15 @@ class App():
 
 
   def encryptMessage(self):
-	rand_string = os.urandom(16)
-	message =input('Please enter your message: ')
-	length = 16 - (len(message)%16)
-	x = len(message)
-	for x in range (length):
-	message += " "
-	obj = AES.new(rand_string,AES.MODE_CBC,'This is an IV456')
-	ciphertext = obj.encrypt(message)
-	print("This is the encrypted message: ", ciphertext)
+    rand_string = os.urandom(16)
+    message =input('Please enter your message: ')
+    length = 16 - (len(message)%16)
+    x = len(message)
+    for x in range (length):
+      message += " "
+    obj = AES.new(rand_string,AES.MODE_CBC,'This is an IV456')
+    ciphertext = obj.encrypt(message)
+    print("This is the encrypted message: ", ciphertext)
 
     
 
