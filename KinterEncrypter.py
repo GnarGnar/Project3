@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from MyQR import myqr
 from tkinter import filedialog
-import os
+import os,binascii
 import qrcode
 import struct
 import statistics
@@ -13,6 +13,8 @@ import cv2
 import numpy as np
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+
+rand_string2 = os.urandom(16) 
 
 LARGE_FONT = ("Verdana", 12)
 small_font = ("Verdana", 11)
@@ -83,19 +85,21 @@ class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
         #####THIS IS HOW DEFINITIONS SHOULD BE DONE
-        def encryptMessage():    
+        def encryptMessage():
+            rand_string = binascii.b2a_hex(os.urandom(16))
+            global rand_string2
             global messsage1
             message1 = entryEncrypt.get()
             print(message1)
             key = keyEntry.get()
-            obj = AES.new(key,AES.MODE_CFB,'This is an IV456')
+            obj = AES.new(key,AES.MODE_CFB,rand_string2)
             ciphertext=obj.encrypt(message1)
             print("This is the encrypted message: ", ciphertext)
         def decryptMessage():
             global message2
             message2 = entryDecrypt.get()
             key2 = keyEntry.get()
-            obj2 = AES.new(key2, AES.MODE_CFB, 'This is an IV456')
+            obj2 = AES.new(key2, AES.MODE_CFB, rand_string2)
             decryptedMessage = obj2.decrypt(message2)
             print("This is the decrypted message: ", obj2.decrypt(message2))
         tk.Frame.__init__(self, parent)
