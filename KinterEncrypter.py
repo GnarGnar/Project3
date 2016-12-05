@@ -53,7 +53,7 @@ class StartPage(tk.Frame):
         def openCam():
             global cap
             cap = cv2.VideoCapture(0)
-            fist_cascade = cv2.CascadeClassifier('C:\\Users\\Ryan\\Desktop\\Proj3OpenCV\\fist.xml')
+            fist_cascade = cv2.CascadeClassifier('C:\\Users\\Ryan\\Desktop\\Project3\\fist.xml')
             while(True):
                 ret, frame = cap.read()
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -70,6 +70,8 @@ class StartPage(tk.Frame):
         label.pack(pady = 10, padx = 10)
         button1 = ttk.Button(self, text = "Start", command = openCam)
         button1.pack()
+        quitButton1 = ttk.Button(self,text="Quit", command = label.quit)
+        quitButton1.place(x=15,y=300)
 
 
 
@@ -109,7 +111,7 @@ class MainPage(tk.Frame):
         encryptIt.place(x = 15, y = 15)
         decryptIt.place(x=15,y=50)
         hideImage.place(x=15,y=100)
-        quitButton.place(x=15,y=150)
+        quitButton.place(x=15,y=300)
         #####Entry######
         entryEncrypt = ttk.Entry(self,width=15)
         entryDecrypt = ttk.Entry(self,width=15)
