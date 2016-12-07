@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from MyQR import myqr
 from tkinter import filedialog
-import os
+import os, binascii
 import qrcode
 import struct
 import statistics
@@ -14,9 +14,13 @@ import numpy as np
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
-LARGE_FONT = ("Verdana", 12)
-small_font = ("Verdana", 11)
+rand_string = binascii.b2a_hex(os.urandom(16))
+rand_string2 = os.urandom(16)
 
+LARGE_FONT = ("Verdana", 12)
+small_font = ("Verdana", 12)
+hella_small_font = ("Verdana", 5)
+ciphertext = " "
 class KinterEncrypter(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -68,7 +72,7 @@ class StartPage(tk.Frame):
             cv2.destroyAllWindows()
         label = ttk.Label(self, text = "Kinter Encrypter", font = LARGE_FONT)
         label.pack(pady = 10, padx = 10)
-        button1 = ttk.Button(self, text = "Start", command = openCam)
+        button1 = ttk.Button(self, text = "Start", command = lambda:controller.show_frame(MainPage))
         button1.pack()
         quitButton1 = ttk.Button(self,text="Quit", command = label.quit)
         quitButton1.place(x=15,y=300)
@@ -81,23 +85,34 @@ class StartPage(tk.Frame):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent)
-        #####THIS IS HOW DEFINITIONS SHOULD BE DONE
-        def encryptMessage():    
-            global messsage1
-            message1 = entryEncrypt.get()
-            print(message1)
+        tk.Frame.__init__(self, parent)
+        def encryptMessage():
+            message = entryEncrypt.get()
+            length = 16-(len(message)%16)
+            x = len(message)
+            for x in range(length):
+                message += "_"
+            print(message)
             key = keyEntry.get()
-            obj = AES.new(key,AES.MODE_CFB,'This is an IV456')
-            ciphertext=obj.encrypt(message1)
-            print("This is the encrypted message: ", ciphertext)
+            print(key)
+            obj = AES.new(key, AES.MODE_CBC, 'This is an IV456')
+            ciphertext = obj.encrypt(message)
+            print(ciphertext)
+
         def decryptMessage():
-            global message2
-            message2 = entryDecrypt.get()
-            key2 = keyEntry.get()
-            obj2 = AES.new(key2, AES.MODE_CFB, 'This is an IV456')
-            decryptedMessage = obj2.decrypt(message2)
-            print("This is the decrypted message: ", obj2.decrypt(message2))
+            key = keyEntry.get()
+            message = entryDecrypt.get()
+            length = 16-(len(message)%16)
+            x = len(message)
+            for x in range(length):
+                message += "_"
+            obj2 = AES.new(key, AES.MODE_CBC, 'This is an IV456')
+            ciphertext = obj2.decrypt(message)
+            print(ciphertext)
+
+
+
+
         tk.Frame.__init__(self, parent)
         #frame=Frame(master)
         #frame.pack()
@@ -119,7 +134,7 @@ class MainPage(tk.Frame):
         keyLabel = ttk.Label(self, text="Key.:", font=small_font)
         keyLabel.place(x=205,y=33)
         entryEncrypt.place(x = 100, y = 18)
-        keyEntry.place(x=250,y=33)
+        keyEntry.place(x=255,y=33)
         entryDecrypt.place(x=100,y=52)
         
     def imageHider(self):
