@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from MyQR import myqr
 from tkinter import filedialog
-import os,binascii
+import os, binascii
 import qrcode
 import struct
 import statistics
