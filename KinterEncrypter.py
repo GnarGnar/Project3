@@ -13,14 +13,17 @@ import cv2
 import numpy as np
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
-
-rand_string = binascii.b2a_hex(os.urandom(16))
-rand_string2 = os.urandom(16)
+import base64
+import os
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 LARGE_FONT = ("Verdana", 12)
 small_font = ("Verdana", 12)
 hella_small_font = ("Verdana", 5)
-ciphertext = " "
+
 class KinterEncrypter(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -39,7 +42,6 @@ class KinterEncrypter(tk.Tk):
             frame = f(container, self)
 
             self.frames[f] = frame
-
             frame.grid(row = 0, column = 0, sticky = "nsew")
 
         self.show_frame(StartPage)
@@ -72,7 +74,7 @@ class StartPage(tk.Frame):
             cv2.destroyAllWindows()
         label = ttk.Label(self, text = "Kinter Encrypter", font = LARGE_FONT)
         label.pack(pady = 10, padx = 10)
-        button1 = ttk.Button(self, text = "Start", command = lambda:controller.show_frame(MainPage))
+        button1 = ttk.Button(self, text = "Start", command = openCam)
         button1.pack()
         quitButton1 = ttk.Button(self,text="Quit", command = label.quit)
         quitButton1.place(x=15,y=300)
@@ -86,30 +88,41 @@ class StartPage(tk.Frame):
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
         def encryptMessage():
+            #message entry
             message = entryEncrypt.get()
-            length = 16-(len(message)%16)
+            length = 16 - (len(message)%16)
             x = len(message)
             for x in range(length):
-                message += "_"
-            print(message)
+                message += " "
+            #key entry 
             key = keyEntry.get()
-            print(key)
-            obj = AES.new(key, AES.MODE_CBC, 'This is an IV456')
-            ciphertext = obj.encrypt(message)
-            print(ciphertext)
+            keyLength = 16 - (len(key)%16)
+            x = len(key)
+            for x in range(keyLength):
+                key += " "
 
+            #encrypting message with the key entry...
+            obj = AES.new(key,AES.MODE_CBC,'This is an IV456')
+            cipherTextBytes = obj.encrypt(message)
+            cipherText = base64.b64encode(cipherTextBytes).decode('ascii')
+            print("This is the encrypted message: ", cipherText)
+            print("This is the key, store this in a safe place: ",key)
+                    
+            
         def decryptMessage():
+            cipherText = entryDecrypt.get()
+            cipherTextBytes = base64.b64decode(cipherText)
             key = keyEntry.get()
-            message = entryDecrypt.get()
-            length = 16-(len(message)%16)
-            x = len(message)
-            for x in range(length):
-                message += "_"
-            obj2 = AES.new(key, AES.MODE_CBC, 'This is an IV456')
-            ciphertext = obj2.decrypt(message)
-            print(ciphertext)
-
+            keyLength = 16 - (len(key)%16)
+            x = len(key)
+            for x in range(keyLength):
+                key += " "
+            obj2 = AES.new(key,AES.MODE_CBC,'This is an IV456')
+            plain_text = obj2.decrypt(cipherTextBytes)
+            plain_text = plain_text.decode()
+            print("Decrypting the message... \n",plain_text)            
 
 
 
