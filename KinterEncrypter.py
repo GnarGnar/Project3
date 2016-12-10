@@ -56,13 +56,16 @@ class StartPage(tk.Frame):
 
         def openCam():
             global cap
+            #opens the camera and imports a haar cascade for a fist for image recognition
             cap = cv2.VideoCapture(0)
             fist_cascade = cv2.CascadeClassifier('C:\\Users\\Ryan\\Desktop\\Project3\\fist.xml')
             while(True):
                 ret, frame = cap.read()
+                #converts the image to grayscale and searchs for the fist
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 fist = fist_cascade.detectMultiScale(gray,1.3,5)
                 for(x,y,w,h) in fist:
+                    #draws a rectangle around the 
                     cv2.rectangle(frame,(x,y),(x+w, y+h),(0,255,0),2)
                     controller.show_frame(MainPage)
                 cv2.imshow('frame', frame)
@@ -88,13 +91,13 @@ class MainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         def encryptMessage():
-            #message entry
+            #message entry, makes sure message is a multiple of 16 bytes
             message = entryEncrypt.get()
             length = 16 - (len(message)%16)
             x = len(message)
             for x in range(length):
                 message += " "
-            #key entry 
+            #key entry, makes sure key is a multiple of 16 bytes
             key = keyEntry.get()
             keyLength = 16 - (len(key)%16)
             x = len(key)
@@ -104,6 +107,7 @@ class MainPage(tk.Frame):
             #encrypting message with the key entry...
             obj = AES.new(key,AES.MODE_CBC,'This is an IV456')
             cipherTextBytes = obj.encrypt(message)
+            #converts the bytestring to a string
             cipherText = base64.b64encode(cipherTextBytes).decode('ascii')
             print("Key ..: ",key)
             print("Encrypted Message ...: ", cipherText)
@@ -112,14 +116,18 @@ class MainPage(tk.Frame):
             
         def decryptMessage():
             cipherText = entryDecrypt.get()
+            #converts the string to a bytestring
             cipherTextBytes = base64.b64decode(cipherText)
             key = keyEntry.get()
             keyLength = 16 - (len(key)%16)
             x = len(key)
+            #makes sure key would be padded the same way as encryption
             for x in range(keyLength):
                 key += " "
+            #decrypting	
             obj2 = AES.new(key,AES.MODE_CBC,'This is an IV456')
             plain_text = obj2.decrypt(cipherTextBytes)
+            #displays our plaintext
             plain_text = plain_text.decode()
             print("Decrypting the message ...: \n")
             time.sleep(5)
