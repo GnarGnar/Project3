@@ -15,10 +15,8 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import base64
 import os
-from cryptography.fernet import Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import time
+
 
 LARGE_FONT = ("Verdana", 12)
 small_font = ("Verdana", 12)
@@ -107,8 +105,9 @@ class MainPage(tk.Frame):
             obj = AES.new(key,AES.MODE_CBC,'This is an IV456')
             cipherTextBytes = obj.encrypt(message)
             cipherText = base64.b64encode(cipherTextBytes).decode('ascii')
-            print("This is the encrypted message: ", cipherText)
-            print("This is the key, store this in a safe place: ",key)
+            print("Key ..: ",key)
+            print("Encrypted Message ...: ", cipherText)
+            
                     
             
         def decryptMessage():
@@ -122,7 +121,9 @@ class MainPage(tk.Frame):
             obj2 = AES.new(key,AES.MODE_CBC,'This is an IV456')
             plain_text = obj2.decrypt(cipherTextBytes)
             plain_text = plain_text.decode()
-            print("Decrypting the message... \n",plain_text)            
+            print("Decrypting the message ...: \n")
+            time.sleep(5)
+            print(plain_text)            
 
 
 
