@@ -361,14 +361,14 @@ class MainPage(tk.Frame):
                 #Work in progress. Hiding image in an image is completed. Pil usage
                 file1 = 'Star-Wars-Darth-Vader-Wallpaper.png'
                 file2 = 'star-wars-yoda-spinoff-film.png'
-                hideImage( file1, file2 )
+                #hideImage( file1, file2 )
             elif choice =='6':
                 #Work in progress. Removing image from image. opencv2 usage
                 print("Select your image: ")
                 inFile = askopenfilename()
                 print (inFile)
                 #root.withdraw()
-                separateImage( inFile, w2, t2, ch2 )
+                #separateImage( inFile, w2, t2, ch2 )
 
 
 
