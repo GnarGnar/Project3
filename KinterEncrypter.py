@@ -274,7 +274,7 @@ class MainPage(tk.Frame):
             cv2.imshow('After', imAfter)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
-              
+        '''      
         #Work in progress.
         def hideImage( file1, file2 ):
             turkey = cv2.imread(file1)
@@ -320,9 +320,10 @@ class MainPage(tk.Frame):
             for x in range( 0, wide ):
                 for y in range( 0, tall):
                     bluValT, greValT, redValT = turkey.item(x,y)
+        '''            
         #main
         #root = Tk()
-        global w2, t2, ch2
+        #global w2, t2, ch2
         
         while( True ):
             print("Steganography")
