@@ -1,12 +1,13 @@
 '''
 Title: CST205 project 3 - KinterEncrypter
 Abstract: Haar recogition startup/ ASE keyword initialize main/ 'Hide and Seek' a text message in a image.
-Ryan - GUI/ def encryptMessage
-Kieran - GUI/ def decryptMessage
-Phil -  def imageHider
+Authors:
+    Ryan - GUI/ def encryptMessage
+    Kieran - GUI/ def decryptMessage
+    Phil -  def imageHider
 Due: 12.11.16
 
-
+github link: https://github.com/GnarGnar/Project3/blob/master/KinterEncrypter.py
 
 reference
     Buchanan, C., Ip, T., Mabbitt, A., May, B., & Mound, D. (2015). 
