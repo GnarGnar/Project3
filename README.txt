@@ -11,10 +11,10 @@ These messages are also sent to the console
 You can also hide messages in an image with the HideIt button
 All the input goes into the console
 Must be ran in order from 1-4
-1. Select an image to be encrypted
+1. Select an image to be encrypted through the GUI
 You must use 'team48' after putting in a secret message
-2. Select 'hiddenimage' to be decrypted
+2. Select 'hiddenimage' to be decrypted through the GUI
 3. Compare Images with each other
 4. Exit the program
 
-This program used for secure messages and images
+This program is used for secure messages and images
