@@ -4,10 +4,9 @@ Opencv, Tkinter, Pycrypto, Pil
 Run the Kinter Encrypter File and use the GUI to encrypt/decrypt messages 
 Also has a function for steganography for putting text inside of an image 
 After Clicking the start button make sure it recognizes your fist
-
+Press q to continue and end video
 Now you can encrypt and decrypt messages with a key...
 These messages are also sent to the console
-
 You can also hide messages in an image with the HideIt button
 All the input goes into the console
 Must be ran in order from 1-4
